@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment variables (Secrets)
+.env
+
+# Logs
+npm-debug.log
+*.log
+
+# IDE files (PyCharm/IntelliJ)
+.idea/
+.claude/
+
+# OS files
+.DS_Store
+nul

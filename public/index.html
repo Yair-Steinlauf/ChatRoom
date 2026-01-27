@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatroom</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Color Palette: Green, Gray, Black, White */
+    :root {
+      --green-primary: #2d8659;
+      --green-light: #4CAF50;
+      --green-dark: #1e5c3f;
+      --gray-light: #f5f7fa;
+      --gray-medium: #6c757d;
+      --gray-dark: #495057;
+      --black: #212529;
+      --white: #ffffff;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .card {
+      border-radius: 12px;
+      border: 1px solid rgba(45, 134, 89, 0.1);
+      box-shadow: 0 4px 20px rgba(45, 134, 89, 0.1);
+    }
+
+    .card-title {
+      color: var(--green-dark);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    h1, h2 {
+      color: var(--green-dark);
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: var(--green-primary);
+      border-color: var(--green-primary);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--green-dark);
+      border-color: var(--green-dark);
+    }
+
+    .btn-secondary {
+      background-color: var(--gray-medium);
+      border-color: var(--gray-medium);
+      color: var(--white);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--gray-dark);
+      border-color: var(--gray-dark);
+    }
+
+    .form-control:focus {
+      border-color: var(--green-primary);
+      box-shadow: 0 0 0 0.2rem rgba(45, 134, 89, 0.25);
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+
+    .alert-warning {
+      background-color: #fff3cd;
+      border-color: #ffeaa7;
+      color: #856404;
+    }
+
+    .alert-info {
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+      color: #0c5460;
+    }
+
+    a {
+      color: var(--green-primary);
+    }
+
+    a:hover {
+      color: var(--green-dark);
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Login View Template -->
+  <template id="login-view">
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow">
+            <div class="card-body p-4">
+              <h1 class="card-title text-center mb-4">Welcome to Chatroom</h1>
+
+              <div id="message-container" class="alert d-none" role="alert"></div>
+
+              <form id="login-form">
+                <h2 class="h4 mb-3">Login</h2>
+
+                <div class="mb-3">
+                  <label for="login-email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="login-email" required minlength="3" maxlength="32">
+                </div>
+
+                <div class="mb-3">
+                  <label for="login-password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="login-password" required minlength="3" maxlength="32">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+              </form>
+
+              <div class="text-center mt-3">
+                <p>Don't have an account? <a href="#" id="go-to-register" class="text-decoration-none">Register here</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Register Step 1 View Template -->
+  <template id="register-step1-view">
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow">
+            <div class="card-body p-4">
+              <h1 class="card-title text-center mb-4">Registration - Step 1</h1>
+
+              <div id="error-container" class="alert alert-danger d-none" role="alert"></div>
+
+              <form id="register-step1-form">
+                <div class="mb-3">
+                  <label for="reg-email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="reg-email"
+                    required
+                    minlength="3"
+                    maxlength="32"
+                    placeholder="your@email.com">
+                </div>
+
+                <div class="mb-3">
+                  <label for="reg-firstName" class="form-label">First Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="reg-firstName"
+                    required
+                    minlength="3"
+                    maxlength="32"
+                    pattern="[a-zA-Z]+"
+                    title="Only letters (a-z) allowed"
+                    placeholder="John">
+                </div>
+
+                <div class="mb-3">
+                  <label for="reg-lastName" class="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="reg-lastName"
+                    required
+                    minlength="3"
+                    maxlength="32"
+                    pattern="[a-zA-Z]+"
+                    title="Only letters (a-z) allowed"
+                    placeholder="Doe">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Continue to Step 2</button>
+              </form>
+
+              <div class="text-center mt-3">
+                <p>Already have an account? <a href="#" id="go-to-login-1" class="text-decoration-none">Login here</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Register Step 2 View Template -->
+  <template id="register-step2-view">
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow">
+            <div class="card-body p-4">
+              <h1 class="card-title text-center mb-4">Registration - Step 2</h1>
+
+              <div id="user-info" class="alert alert-info"></div>
+
+              <div id="error-container-step2" class="alert alert-danger d-none" role="alert"></div>
+
+              <div id="timeout-warning" class="alert alert-warning d-none text-center fw-bold" role="alert">
+                Time remaining: <span id="timer">30</span> seconds
+              </div>
+
+              <form id="register-step2-form">
+                <div class="mb-3">
+                  <label for="reg-password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="reg-password"
+                    required
+                    minlength="3"
+                    maxlength="32"
+                    placeholder="Enter password">
+                </div>
+
+                <div class="mb-3">
+                  <label for="reg-confirmPassword" class="form-label">Confirm Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="reg-confirmPassword"
+                    required
+                    minlength="3"
+                    maxlength="32"
+                    placeholder="Re-enter password">
+                </div>
+
+                <div class="d-grid gap-2">
+                  <button type="button" id="back-button" class="btn btn-secondary">
+                    Back to Step 1
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Complete Registration
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/javascripts/app.js"></script>
+</body>
+</html>

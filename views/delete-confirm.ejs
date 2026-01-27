@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Message</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --green-primary: #2d8659;
+      --green-dark: #1e5c3f;
+    }
+    body {
+      background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    .btn-primary {
+      background-color: var(--green-primary);
+      border-color: var(--green-primary);
+    }
+    .btn-primary:hover {
+      background-color: var(--green-dark);
+      border-color: var(--green-dark);
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <h2 class="text-center text-danger mb-4">Delete Message</h2>
+
+            <div class="alert alert-warning">
+              <strong>Are you sure? Deleting a message cannot be undone.</strong>
+            </div>
+
+            <div class="card mb-4">
+              <div class="card-body">
+                <p class="text-muted mb-1">
+                  <small>By: <%= message.User.firstName %> <%= message.User.lastName %> | <%= new Date(message.createdAt).toLocaleString('he-IL') %></small>
+                </p>
+                <p class="mb-0"><%= message.content %></p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <form action="/messages/<%= message.id %>/delete" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+              <a href="/chatroom" class="btn btn-primary">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
