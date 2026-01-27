@@ -6,287 +6,76 @@
   <title>Chatroom</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* Color Palette: Green, Gray, Black, White */
     :root {
-      --green-primary: #2d8659;
-      --green-light: #4CAF50;
-      --green-dark: #1e5c3f;
-      --gray-light: #f5f7fa;
-      --gray-medium: #6c757d;
-      --gray-dark: #495057;
-      --black: #212529;
-      --white: #ffffff;
+      --bs-success: #2d8659;
+      --bs-success-rgb: 45, 134, 89;
     }
-
     body {
       background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
       min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
-
-    .chat-container {
-      max-width: 900px;
-      margin: 30px auto;
-      background: var(--white);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(45, 134, 89, 0.1);
-      padding: 30px;
-      border: 1px solid rgba(45, 134, 89, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: var(--green-dark);
-      font-weight: 600;
-      margin-bottom: 30px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid var(--green-primary);
-    }
-
-    .messages-container {
-      max-height: 550px;
-      overflow-y: auto;
-      margin-bottom: 25px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 20px;
-      background-color: var(--gray-light);
-    }
-
-    .messages-container::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .messages-container::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-
-    .messages-container::-webkit-scrollbar-thumb {
-      background: var(--green-primary);
-      border-radius: 4px;
-    }
-
-    .message-item {
-      margin-bottom: 18px;
-      padding: 15px;
-      background-color: var(--white);
-      border-radius: 8px;
-      border-left: 4px solid var(--green-primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .message-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .message-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .message-author {
-      font-weight: 600;
-      color: var(--green-dark);
-      font-size: 1.05em;
-    }
-
-    .message-time {
-      font-size: 0.85em;
-      color: var(--gray-medium);
-    }
-
-    .message-content {
-      margin: 8px 0;
-      color: var(--black);
-      line-height: 1.6;
-    }
-
-    .message-actions {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #e9ecef;
-    }
-
-    .message-actions button {
-      margin-right: 8px;
-    }
-
     .btn-primary {
-      background-color: var(--green-primary);
-      border-color: var(--green-primary);
-      color: var(--white);
+      background-color: #2d8659;
+      border-color: #2d8659;
     }
-
     .btn-primary:hover {
-      background-color: var(--green-dark);
-      border-color: var(--green-dark);
-    }
-
-    .btn-secondary {
-      background-color: var(--gray-medium);
-      border-color: var(--gray-medium);
-      color: var(--white);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--gray-dark);
-      border-color: var(--gray-dark);
-    }
-
-    /* Edit button (was orange) - match green/gray palette */
-    .btn-warning,
-    .edit-btn.btn-warning {
-      background-color: rgba(45, 134, 89, 0.12);
-      border-color: rgba(45, 134, 89, 0.35);
-      color: var(--green-dark);
-      font-weight: 600;
-    }
-
-    .btn-warning:hover,
-    .edit-btn.btn-warning:hover {
-      background-color: rgba(45, 134, 89, 0.18);
-      border-color: rgba(45, 134, 89, 0.55);
-      color: var(--green-dark);
-    }
-
-    /* Delete stays red (destructive), but slightly “cleaner” */
-    .btn-danger,
-    .delete-btn.btn-danger {
-      background-color: #c82333;
-      border-color: #c82333;
-    }
-
-    .btn-danger:hover,
-    .delete-btn.btn-danger:hover {
-      background-color: #a71d2a;
-      border-color: #a71d2a;
-    }
-
-    .btn-outline-secondary {
-      border-color: var(--gray-medium);
-      color: var(--gray-dark);
-    }
-
-    .btn-outline-secondary:hover {
-      background-color: var(--gray-medium);
-      border-color: var(--gray-medium);
-      color: var(--white);
-    }
-
-    #search-container {
-      margin-bottom: 25px;
-    }
-
-    .form-control {
-      border-color: #ced4da;
-    }
-
-    .form-control:focus {
-      border-color: var(--green-primary);
-      box-shadow: 0 0 0 0.2rem rgba(45, 134, 89, 0.25);
-    }
-
-    .edit-mode {
-      display: none;
-    }
-
-    .edit-mode.active {
-      display: block;
-    }
-
-    .card {
-      border-color: rgba(45, 134, 89, 0.2);
-      border-radius: 8px;
-    }
-
-    .card-title {
-      color: var(--green-dark);
-      text-align: center;
-    }
-
-    .alert-success {
-      background-color: #d4edda;
-      border-color: #c3e6cb;
-      color: #155724;
-    }
-
-    .alert-danger {
-      background-color: #f8d7da;
-      border-color: #f5c6cb;
-      color: #721c24;
-    }
-
-    .alert-warning {
-      background-color: #fff3cd;
-      border-color: #ffeaa7;
-      color: #856404;
-    }
-
-    .text-muted {
-      color: var(--gray-medium) !important;
-    }
-
-    #logout-btn {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-    }
-
-    .d-flex.justify-content-between {
-      position: relative;
+      background-color: #1e5c3f;
+      border-color: #1e5c3f;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="chat-container">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="w-100">Welcome <span id="username"></span>!</h1>
-        <button id="logout-btn" class="btn btn-secondary">Logout</button>
-      </div>
-
-      <div id="flash-container" class="alert d-none" role="alert"></div>
-
-      <!-- Search -->
-      <div id="search-container" class="mb-3">
-        <div class="input-group">
-          <input type="text" id="search-input" class="form-control" placeholder="Search messages...">
-          <button id="search-btn" class="btn btn-outline-secondary">Search</button>
-          <button id="clear-search-btn" class="btn btn-outline-secondary" style="display: none;">Clear</button>
-        </div>
-      </div>
-
-      <!-- Messages -->
-      <div id="messages-container" class="messages-container">
-        <p class="text-center text-muted">Loading messages...</p>
-      </div>
-
-      <!-- Edit form (hidden by default) -->
-      <div id="edit-container" class="edit-mode mb-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Edit Message</h5>
-            <textarea id="edit-content" class="form-control mb-2" rows="3"></textarea>
-            <div>
-              <button id="save-edit-btn" class="btn btn-primary btn-sm">Save</button>
-              <button id="cancel-edit-btn" class="btn btn-secondary btn-sm">Cancel</button>
+  <div class="container py-2 py-md-3 py-lg-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-11 col-lg-10 col-xl-8">
+        <div class="card shadow-sm">
+          <div class="card-body p-2 p-md-3 p-lg-4">
+            <!-- Header with logout button -->
+            <div class="text-center mb-3 mb-md-4">
+              <h1 class="h3 mb-2">Welcome <span id="username"></span>!</h1>
+              <button id="logout-btn" class="btn btn-secondary">Logout</button>
             </div>
+
+            <div id="flash-container" class="alert d-none" role="alert"></div>
+
+            <!-- Search -->
+            <div id="search-container" class="mb-3">
+              <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Search messages...">
+                <button id="search-btn" class="btn btn-outline-secondary">Search</button>
+                <button id="clear-search-btn" class="btn btn-outline-secondary d-none">Clear</button>
+              </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="messages-container" class="border rounded p-2 p-md-3 bg-white overflow-auto mb-3" style="max-height: 400px;">
+              <p class="text-center text-muted">Loading messages...</p>
+            </div>
+
+            <!-- Edit form (hidden by default) -->
+            <div id="edit-container" class="d-none mb-3">
+              <div class="card">
+                <div class="card-body p-2 p-md-3">
+                  <h5 class="card-title text-center">Edit Message</h5>
+                  <textarea id="edit-content" class="form-control mb-2" rows="3"></textarea>
+                  <div class="d-flex gap-2 flex-column flex-sm-row">
+                    <button id="save-edit-btn" class="btn btn-primary btn-sm flex-fill">Save</button>
+                    <button id="cancel-edit-btn" class="btn btn-secondary btn-sm flex-fill">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Send message form -->
+            <form id="message-form" action="/messages" method="POST">
+              <div class="input-group">
+                <input type="text" id="message-input" name="content" class="form-control" placeholder="Type a message..." maxlength="1000" required>
+                <button type="submit" class="btn btn-primary">Send</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-
-      <!-- Send message form (regular form POST, not fetch) -->
-      <form id="message-form" action="/messages" method="POST">
-        <div class="input-group">
-          <input type="text" id="message-input" name="content" class="form-control" placeholder="Type a message..." maxlength="1000" required>
-          <button type="submit" class="btn btn-primary">Send</button>
-        </div>
-      </form>
     </div>
   </div>
 

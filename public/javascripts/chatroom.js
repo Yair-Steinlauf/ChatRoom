@@ -87,26 +87,28 @@ const ChatView = {
 
     messages.forEach(msg => {
       const div = document.createElement('div');
-      div.className = 'message-item';
+      div.className = 'card mb-2 mb-md-3 shadow-sm';
       // Use dataset instead of id attribute
       div.dataset.messageId = msg.id;
 
       const isOwner = msg.user.id === currentUserId;
 
       div.innerHTML = `
-        <div class="message-header">
-          <span class="message-author">${this.escapeHtml(msg.user.firstName)} ${this.escapeHtml(msg.user.lastName)}</span>
-          <span class="message-time">${this.formatDate(msg.createdAt)}${msg.updatedAt !== msg.createdAt ? ' (edited)' : ''}</span>
-        </div>
-        <div class="message-content">
-          ${this.escapeHtml(msg.content)}
-        </div>
-        ${isOwner ? `
-          <div class="message-actions">
-            <button class="btn btn-sm btn-warning edit-btn" data-id="${msg.id}" type="button">Edit</button>
-            <button class="btn btn-sm btn-danger delete-btn" data-id="${msg.id}" type="button">Delete</button>
+        <div class="card-body p-2 p-md-3">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-2 gap-1">
+            <span class="fw-bold text-success">${this.escapeHtml(msg.user.firstName)} ${this.escapeHtml(msg.user.lastName)}</span>
+            <span class="text-muted small">${this.formatDate(msg.createdAt)}${msg.updatedAt !== msg.createdAt ? ' (edited)' : ''}</span>
           </div>
-        ` : ''}
+          <div class="mb-2">
+            ${this.escapeHtml(msg.content)}
+          </div>
+          ${isOwner ? `
+            <div class="border-top pt-2 mt-2 d-flex flex-column flex-sm-row gap-2">
+              <button class="btn btn-sm btn-warning edit-btn flex-sm-fill" data-id="${msg.id}" type="button">Edit</button>
+              <button class="btn btn-sm btn-danger delete-btn flex-sm-fill" data-id="${msg.id}" type="button">Delete</button>
+            </div>
+          ` : ''}
+        </div>
       `;
       fragment.appendChild(div);
     });
@@ -124,7 +126,7 @@ const ChatView = {
    */
   showEditForm(content) {
     this.elements.editContent.value = content;
-    this.elements.editContainer.classList.add('active');
+    this.elements.editContainer.classList.remove('d-none');
     this.elements.editContainer.scrollIntoView({ behavior: 'smooth' });
   },
 
@@ -132,7 +134,7 @@ const ChatView = {
    * Hide the edit form and clear its content
    */
   hideEditForm() {
-    this.elements.editContainer.classList.remove('active');
+    this.elements.editContainer.classList.add('d-none');
     this.elements.editContent.value = '';
   },
 
@@ -149,7 +151,11 @@ const ChatView = {
    * @param {boolean} visible
    */
   setClearSearchVisible(visible) {
-    this.elements.clearSearchBtn.style.display = visible ? 'block' : 'none';
+    if (visible) {
+      this.elements.clearSearchBtn.classList.remove('d-none');
+    } else {
+      this.elements.clearSearchBtn.classList.add('d-none');
+    }
   },
 
   /**
